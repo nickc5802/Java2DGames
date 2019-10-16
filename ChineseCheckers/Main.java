@@ -49,5 +49,12 @@ public class Main {
         frame.getContentPane().remove(menu);
         frame.getContentPane().add(game);
         frame.revalidate();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                game.update();
+            }
+        };
+        java.util.Timer t = new java.util.Timer();
+        t.schedule(task, 0, 10);
     }
 }

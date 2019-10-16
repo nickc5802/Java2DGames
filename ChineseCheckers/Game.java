@@ -7,6 +7,7 @@ import java.util.*;
 public class Game extends JPanel {
     Piece[][] board;
     int teams;
+    Point mouseBoardLoc;
 
     public Game(int teams) {
         super();
@@ -28,9 +29,14 @@ public class Game extends JPanel {
         }
         repaint();
     }
-
+    
+    public void update() {
+        repaint();
+    }
+    
     @Override
     public void paint(Graphics g) {
+        super.paint(g);
         //Background
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 500, 500);
@@ -71,5 +77,30 @@ public class Game extends JPanel {
                 }
             }
         }
+        
+        Point loc = MouseInfo.getPointerInfo().getLocation();
+        Point screen = getLocationOnScreen();
+        Point mouse = new Point((int)(loc.getX()-screen.getX()), (int)(loc.getY()-screen.getY()));
+        boolean mouseSet = false;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                Rectangle r = new Rectangle();
+                if (board[i].length%2==1) {
+                    r.setBounds(250 + (j-(board[i].length-1)/2)*28-8, 250-216+8+(int)(24.9*i), 16, 16);
+                } else {
+                    r.setBounds(250 + (j-(board[i].length-1)/2)*28-8-14, 250-216+8+(int)(24.9*i), 16, 16);
+                }
+                if (r.contains(mouse)) {
+                    g.setColor(Color.ORANGE);
+                    g.drawOval((int)r.getX() - 2, (int)r.getY()- 2, (int)r.getWidth() + 4, (int)r.getHeight() + 4);
+                    mouseBoardLoc = new Point(i, j);
+                    mouseSet = true;
+                }
+            }
+        }
+        if (!mouseSet) {
+            mouseBoardLoc = null;
+        }
+        System.out.println(mouseBoardLoc);
     }
 }
