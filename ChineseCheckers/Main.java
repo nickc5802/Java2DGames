@@ -32,7 +32,7 @@ public class Main {
                 public void actionPerformed(ActionEvent a) {
                     try {
                         int num = Integer.valueOf(text.getText());
-                        if (num >= 2 && num <= 6) {
+                        if ((num >= 2 && num <= 6) || num != 5) {
                             start(num);
                         } else {
                             System.out.println("Invalid input");
