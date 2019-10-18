@@ -9,9 +9,11 @@ public class Main {
     static Game game;
     static JFrame frame;
     static JPanel menu;
+    
     public static void main() {
         frame = new JFrame("Chinese Checkers");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setFocusable(true);
         menu = new JPanel();
         menu.setPreferredSize(new Dimension(500, 500));
         menu.setLayout(null);
@@ -48,6 +50,7 @@ public class Main {
         game = new Game(numPlayers);
         frame.getContentPane().remove(menu);
         frame.getContentPane().add(game);
+        frame.addMouseListener(game.getML());
         frame.revalidate();
         TimerTask task = new TimerTask() {
             public void run() {

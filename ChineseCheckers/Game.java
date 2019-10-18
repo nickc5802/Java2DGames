@@ -1,17 +1,24 @@
 package ChineseCheckers;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 
 public class Game extends JPanel {
     Piece[][] board;
     int teams;
-    Point mouseBoardLoc;
+    int currTeam;
+    Point mouseLoc;
+    Point selected;
+    Point destination;
+    java.util.List<Point> allowedPositions;
+    MouseListener ml;
 
     public Game(int teams) {
         super();
         this.teams = teams;
+        currTeam = 1;
         board = new Piece[17][1];
         for (int i = 0; i < 4; i++) {
             board[i] = new Piece[i+1];
@@ -29,6 +36,32 @@ public class Game extends JPanel {
         }
         setUpPlayers(teams);
         repaint();
+        ml = new MouseListener() {
+            public void mouseClicked(MouseEvent e) {}
+
+            public void mouseEntered(MouseEvent e) {}
+
+            public void mouseExited(MouseEvent e) {}
+
+            public void mousePressed(MouseEvent e) {
+                System.out.println("hello");
+                if (mouseLoc != null) {
+                    if (selected == null) {
+                        if (board[mouseLoc.x][mouseLoc.y] != null && board[mouseLoc.x][mouseLoc.y].getTeam() == currTeam) {
+                            selected = mouseLoc;
+                        }
+                    } else if (destination == null) {
+                        destination = mouseLoc;
+                    }
+                }
+            }
+
+            public void mouseReleased(MouseEvent e) {}
+        };
+    }
+
+    public MouseListener getML() {
+        return ml;
     }
 
     private void setUpPlayers(int numPlayers) {
@@ -86,9 +119,19 @@ public class Game extends JPanel {
         }
     }
 
-
     public void update() {
         repaint();
+        if (destination != null && selected != null) {
+            movePiece();
+        }
+    }
+
+    private void movePiece() {
+        board[destination.x][destination.y] = board[selected.x][selected.y];
+        board[selected.x][selected.y] = null;
+        selected = null;
+        destination = null;
+        return;
     }
 
     @Override
@@ -163,13 +206,13 @@ public class Game extends JPanel {
                 if (r.contains(mouse)) {
                     g.setColor(Color.ORANGE);
                     g.drawOval((int)r.getX() - 2, (int)r.getY()- 2, (int)r.getWidth() + 4, (int)r.getHeight() + 4);
-                    mouseBoardLoc = new Point(i, j);
+                    mouseLoc = new Point(i, j);
                     mouseSet = true;
                 }
             }
         }
         if (!mouseSet) {
-            mouseBoardLoc = null;
+            mouseLoc = null;
         }
     }
 }

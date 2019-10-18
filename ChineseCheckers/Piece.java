@@ -6,4 +6,8 @@ public class Piece {
     public Piece(int team) {
         this.team = team;
     }
+    
+    public int getTeam() {
+        return team;
+    }
 }
