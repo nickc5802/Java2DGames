@@ -44,7 +44,6 @@ public class Game extends JPanel {
             public void mouseExited(MouseEvent e) {}
 
             public void mousePressed(MouseEvent e) {
-                System.out.println("hello");
                 if (mouseLoc != null) {
                     if (selected == null) {
                         if (board[mouseLoc.x][mouseLoc.y] != null && board[mouseLoc.x][mouseLoc.y].getTeam() == currTeam) {
