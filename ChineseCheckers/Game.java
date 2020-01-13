@@ -12,7 +12,7 @@ public class Game extends JPanel {
     Point mouseLoc;
     Point selected;
     Point destination;
-    java.util.List<Point> allowedPositions;
+    ArrayList<Point> allowedPositions;
     MouseListener ml;
 
     public Game(int teams) {
@@ -49,7 +49,9 @@ public class Game extends JPanel {
                         if (board[mouseLoc.x][mouseLoc.y] != null && board[mouseLoc.x][mouseLoc.y].getTeam() == currTeam) {
                             selected = mouseLoc;
                         }
-                    } else if (destination == null) {
+                    } else if (mouseLoc.equals(selected)) {
+                        selected = null;
+                    } else if (destination == null && board[(int)mouseLoc.getX()][(int)mouseLoc.getY()] == null) {
                         destination = mouseLoc;
                     }
                 }
@@ -130,7 +132,6 @@ public class Game extends JPanel {
         board[selected.x][selected.y] = null;
         selected = null;
         destination = null;
-        return;
     }
 
     @Override
@@ -213,5 +214,17 @@ public class Game extends JPanel {
         if (!mouseSet) {
             mouseLoc = null;
         }
+    }
+    
+    private void findValidMoves(Point p) {
+        /* Notes
+         * 
+         * 1. Add all empty spaces surrounding p that aren't in list to list
+         * 2. see if any pieces adjacent to p are jumpable, if so:
+         *    check if it is in list, if not add it to List and call this 
+         *    method on that point
+         */
+        
+        
     }
 }
